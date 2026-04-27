@@ -22,7 +22,7 @@ php -v
 composer -v
 ```
 
-##Instalación y Configuración
+## Instalación y Configuración
 
 Sigue estos pasos para levantar el entorno de desarrollo localmente:
 
