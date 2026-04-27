@@ -58,6 +58,15 @@ php artisan serve
 
 7. Accede a: http://127.0.0.1:8000
 
+### 🔄 Estructura de Ramas
+* **main**: Código estable y listo para despliegue.
+* **develop**: Rama principal de desarrollo. Todos los PRs deben ir aquí.
+* **feature/**: Ramas temporales para nuevas tareas (ej. `feature/modulo-ventas`).
+* **hotfix/**: Reparaciones de emergencia en producción.
+
+**Proceso de entrega:**
+1. `Fork` del repo -> 2. `Checkout develop` -> 3. Crear `feature` -> 4. `Pull Request` a `develop` -> 5. Revisión de **QA** -> 6. `Merge`.
+
 ## Lineamientos de Colaboración (Git Flow)
 Para asegurar la calidad del código y evitar conflictos, el equipo seguirá estas reglas:
 
