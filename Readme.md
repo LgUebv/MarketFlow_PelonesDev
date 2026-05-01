@@ -7,6 +7,12 @@
 
 Este repositorio aloja el proyecto **MarketFlow**, desarrollado para las materias de **DevOps** y **RAD**. El objetivo es mantener un flujo de trabajo profesional, estandarizado y colaborativo.
 
+**Creado por los integrantes/desarrolladores:**
+
+* José Manuel Vega Torres
+* Angel Uriel Luevano Saavedra
+* Luis Fernando Gomez Maldonado
+* Luis Julian Hernandez Trejo
 ---
 
 ##  Requisitos del Sistema
@@ -22,13 +28,13 @@ php -v
 composer -v
 ```
 
-##Instalación y Configuración
+## Instalación y Configuración
 
 Sigue estos pasos para levantar el entorno de desarrollo localmente:
 
 1. Clonar el repositorio:
 ```bash
-git clone git@github.com:AdanBallesillo/ProyectoEmpresaDeSeguridad.git
+git clone git@github.com:LgUebv/MarketFlow_PelonesDev.git
 cd MarketFlow
 ```
 
@@ -57,6 +63,15 @@ php artisan serve
 ```
 
 7. Accede a: http://127.0.0.1:8000
+
+### Estructura de Ramas
+* **main**: Código estable y listo para despliegue.
+* **develop**: Rama principal de desarrollo. Todos los PRs deben ir aquí.
+* **feature/**: Ramas temporales para nuevas tareas (ej. `feature/modulo-ventas`).
+* **hotfix/**: Reparaciones de emergencia en producción.
+
+**Proceso de entrega:**
+1. `Fork` del repo -> 2. `Checkout develop` -> 3. Crear `feature/` -> 4. `Pull Request` a `develop` -> 5. Revisión de **QA** -> 6. `Merge`.
 
 ## Lineamientos de Colaboración (Git Flow)
 Para asegurar la calidad del código y evitar conflictos, el equipo seguirá estas reglas:
