@@ -5,20 +5,25 @@
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Development-cyan?style=for-the-badge)
 
-Este repositorio aloja el proyecto **MarketFlow**, desarrollado para las materias de **DevOps** y **RAD**. El objetivo es mantener un flujo de trabajo profesional, estandarizado y colaborativo.
+Este repositorio aloja el proyecto de **MarketFlow**, el cual, es un sistema de gestión robusto desarrollado para las materias de **DevOps** y **RAD**. El proyecto utiliza una arquitectura de microservicios mediante contenedores para asegurar un entorno de desarrollo estandarizado y colaborativo.
 
 **Creado por los integrantes/desarrolladores:**
 
-* José Manuel Vega Torres
-* Angel Uriel Luevano Saavedra
-* Luis Fernando Gomez Maldonado
-* Luis Julian Hernandez Trejo
+* José Manuel Vega Torres - Lider Tecnico y DBA
+* Angel Uriel Luevano Saavedra - DevOps Engineer y DBA
+* Luis Fernando Gomez Maldonado - Diseñador UX/UI
+* Luis Julian Hernandez Trejo - Scrum Master
 ---
 
 ##  Requisitos del Sistema
 
-Antes de iniciar, asegúrate de tener instalado lo siguiente:
+### Antes de iniciar, asegúrate de tener instalado lo siguiente:
 
+Para ejecutar este proyecto mediante la infraestructura de contenedores, necesitas:
+* **Docker & Docker Compose** (Esencial para los 3 contenedores: Front, Back y DB).
+* **Git** (Para el control de versiones).
+
+Si decides ejecutarlo de forma local (sin Docker):
 * **PHP:** `^8.4`
 * **Composer:** Última versión estable.
 
@@ -27,15 +32,48 @@ Puedes verificar tus versiones ejecutando:
 php -v
 composer -v
 ```
+---
 
-## Instalación y Configuración
+## Instalación y Configuración en contenedores
+(Esta es la forma recomendada para evitar problemas de permisos y dependencias)
 
-Sigue estos pasos para levantar el entorno de desarrollo localmente:
+
+Sigue estos pasos para levantar el entorno de desarrollo desde docker:
 
 1. Clonar el repositorio:
 ```bash
 git clone git@github.com:LgUebv/MarketFlow_PelonesDev.git
-cd MarketFlow
+cd MarketFlow_v2
+```
+2. Permisos del Script (Linux/Fedora):
+Antes de ejecutar, concede permisos al script de automatización:
+```bash
+chmod +x configurarProyecto.sh
+```
+3. Levantar el Entorno:
+Ejecuta el script para configurar variables de entorno y construir los contenedores:
+```bash
+./configurarProyecto.sh
+```
+4. Verificar estado:
+Si todo se creo con exito, ingresa a los siguientes localhost
+127.0.0.1:8080 (front)
+127.0.0.1:8000 (back)
+
+para las credenciales de la DB, sera necesario ponerse en contacto con los encargados de DBA.
+
+Puedes monitorear los contenedores (backend, frontend, db) con:
+```bash
+docker ps
+docker ps -a
+```
+---
+
+## Instalación y Configuración en local
+1. Clonar el repositorio:
+```bash
+git clone git@github.com:LgUebv/MarketFlow_PelonesDev.git
+cd MarketFlow_v2
 ```
 
 2. Instalar dependencias:
@@ -70,7 +108,7 @@ php artisan serve
 * **feature/**: Ramas temporales para nuevas tareas (ej. `feature/modulo-ventas`).
 * **hotfix/**: Reparaciones de emergencia en producción.
 
-**Proceso de entrega:**
+ **Proceso de entrega:**
 1. `Fork` del repo -> 2. `Checkout develop` -> 3. Crear `feature/` -> 4. `Pull Request` a `develop` -> 5. Revisión de **QA** -> 6. `Merge`.
 
 ## Lineamientos de Colaboración (Git Flow)
