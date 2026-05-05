@@ -32,6 +32,7 @@ export default {
                 },
             },
             fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 'title': ['"Juliues Sans One"', 'sans-serif'],
                 'body': ['Inter', 'sans-serif'],
             },
