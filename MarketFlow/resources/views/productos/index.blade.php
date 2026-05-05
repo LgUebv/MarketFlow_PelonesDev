@@ -7,6 +7,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Imagen</th>
             <th>Nombre</th>
             <th>Stock</th>
             <th>Precio</th>
@@ -17,6 +18,16 @@
         @foreach($productos as $producto)
         <tr>
             <td>{{ $producto->id_producto }}</td>
+            <td>
+                @php
+                    // Obtenemos la imagen marcada como portada
+                    $portada = $producto->imagenes->where('portada', true)->first();
+                    $ruta = $portada ? $portada->rutaImagen : 'default.png';
+                @endphp
+
+                <img src="{{ str_starts_with($ruta, 'http') ? $ruta : asset('storage/' . $ruta) }}"
+                    alt="Portada" style="width: 50px; height: 50px; object-fit: cover;">
+            </td>
             <td>{{ $producto->nombre }}</td>
             <td>{{ $producto->stock }}</td>
             <td>${{ $producto->precio }}</td>

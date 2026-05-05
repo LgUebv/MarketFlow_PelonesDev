@@ -1,13 +1,18 @@
-<h1>Crear Nuevo Producto</h1>
-<a href="{{ route('productos.index') }}"><button>Volver a la lista</button></a>
-
-<form action="{{ route('productos.store') }}" method="POST" style="margin-top: 20px;">
+<form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
     @csrf
 
     <div>
         <label>Nombre del producto:</label><br>
         <input type="text" name="nombre" required>
     </div><br>
+
+    <!-- Campos de nombre, precio, etc. -->
+
+    <div class="form-group">
+        <label>Imágenes del Producto</label>
+        <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*">
+        <small>Puedes seleccionar varias fotos a la vez.</small>
+    </div>
 
     <div>
         <label>Categoría:</label><br>
