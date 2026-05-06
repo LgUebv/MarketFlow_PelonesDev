@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Pedido;
 
 class Direccion extends Model
 {
@@ -39,6 +40,6 @@ class Direccion extends Model
         // tiene muchos pedidos (hasMany)
         // En la tabla 'pedidos' se llama 'id_direccion'
         // En esta tabla 'direccion' se llama 'id_direccion'
-        return $this->hasMany(Pedidos::class, 'id_direccion', 'id_direccion');
+        return $this->hasMany(Pedido::class, 'id_direccion', 'id_direccion');
     }
 }
