@@ -20,6 +20,8 @@ Route::middleware([
 // Ruta para productos
 Route::resource('productos', ProductoController::class);
 
-Route::delete('/imagen/{id_imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.destroyImagen'); //eliminar imagen
-Route::post('/producto/{producto}/portada/{imagen}', [ProductoController::class, 'setPortada'])->name('productos.setPortada'); //marcar como portada
-Route::post('/producto/{id}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.addImagenes'); //agregar más imágenes a un producto existente
+// Para borrar una imagen específica
+Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
+
+// Para añadir nuevas imágenes desde el modal
+Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');

@@ -35,24 +35,26 @@ class ProductoController extends Controller
      */
     public function store(ProductoRequest $request)
     {
-        $producto = Producto::create([
-            'id_categoria' => $request->id_categoria,
-            'id_user' => auth()->id() ?? 1, // Por si no hay login aún
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'stock' => $request->stock,
-            'precio' => $request->precio,
-            'activo' => true
-        ]);
+        // DESCOMENTAR ESTO EN CASO QUE NO HAYA LOGIN AÚN, NO ESTEN LOGEADOS O QUE NO TENGAN USUARIOS PARA ASIGNAR UN USUARIO POR DEFECTO
+        // $producto = Producto::create([
+        //     'id_categoria' => $request->id_categoria,
+        //     'id_user' => auth()->id() ?? 1, // Por si no hay login aún
+        //     'nombre' => $request->nombre,
+        //     'descripcion' => $request->descripcion,
+        //     'stock' => $request->stock,
+        //     'precio' => $request->precio,
+        //     'activo' => true
+        // ]);
+        $producto = Producto::create($request->validated());
 
-        // 2. Revisar si vienen imágenes (usando el nombre 'imagenes' que pusimos en el form)
+        // Revisar si vienen imágenes (usando el nombre 'imagenes' que pusimos en el form)
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $index => $foto) {
                 // Guardar el archivo físicamente
                 $path = $foto->store('productos', 'public');
 
                 // Crear el registro en la base de datos
-                \App\Models\ImagenProducto::create([
+                ImagenProducto::create([
                     'id_producto' => $producto->id_producto, // Usa la variable que creaste arriba
                     'rutaImagen'  => $path,
                     'portada'     => ($index === 0) ? true : false, // La primera foto será la portada
@@ -84,29 +86,26 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductoRequest $request, string $id)
+    public function update(ProductoRequest $request, Producto $producto)
     {
-        $producto = Producto::findOrFail($id);
+        $producto->update($request->validated());
 
-        // Validamos igual que en el store
-        $request->validate([
-            'nombre' => 'required',
-            'id_categoria' => 'required',
-            'descripcion' => 'required',
-            'stock' => 'required|integer',
-            'precio' => 'required|numeric',
-        ]);
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $index => $foto) {
+                $path = $foto->store('productos', 'public');
 
-        // Actualizamos los datos
-        $producto->update([
-            'id_categoria' => $request->id_categoria,
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'stock' => $request->stock,
-            'precio' => $request->precio,
-        ]);
+                // PUNTO 3: Checar si ya existe una portada
+                $tienePortada = $producto->imagenes()->where('portada', true)->exists();
 
-        return redirect()->route('productos.index');
+                $producto->imagenes()->create([
+                    'rutaImagen' => $path,
+                    // Si NO tiene portada, la primera foto de este loop se vuelve la portada
+                    'portada' => (!$tienePortada && $index === 0) ? true : false
+                ]);
+            }
+        }
+
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado');
     }
 
     /**
@@ -123,51 +122,51 @@ class ProductoController extends Controller
     /**
      * Función para añadir imágenes a un producto
      */
-    public function addImagenes(Request $request, $id)
+    public function addImagenes(Request $request, Producto $producto)
     {
-        $producto = Producto::findOrFail($id);
+        $request->validate([
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120'
+        ]);
 
         if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $imagen) {
-                $path = $imagen->store('productos', 'public');
+            foreach ($request->file('imagenes') as $file) {
+                $path = $file->store('productos', 'public');
 
+                // Creamos la relación
                 $producto->imagenes()->create([
                     'rutaImagen' => $path,
-                    'portada'  => false // Las nuevas no son portada por defecto
+                    'portada' => false
                 ]);
             }
         }
-        return back()->with('success', 'Fotos añadidas correctamente.');
+
+        return back()->with('success', 'Imágenes añadidas con éxito');
     }
 
     /**
      * Función para eliminar una imagen de un producto
      */
-    public function destroyImagen($id_imagen)
+    public function destroyImagen(ImagenProducto $imagen)
     {
-        // Usamos el modelo que hizo tu compa
-        $imagen = ImagenProducto::findOrFail($id_imagen);
+        $id_producto = $imagen->id_producto; // Guardamos el ID del dueño de la foto
+        $eraPortada = $imagen->portada;
 
-        // 1. Borrar el archivo físico del storage
+        // 1. Borrar archivo físico
         if (\Storage::disk('public')->exists($imagen->rutaImagen)) {
             \Storage::disk('public')->delete($imagen->rutaImagen);
         }
 
-        // 2. Borrar el registro de la base de datos
+        // 2. Borrar registro
         $imagen->delete();
 
-        return back()->with('info', 'Imagen eliminada.');
-    }
+        // 3. CAMBIO AUTOMÁTICO: Si borraste la portada, buscar otra foto para que tome el puesto
+        if ($eraPortada) {
+            $nuevaPortada = \App\Models\ImagenProducto::where('id_producto', $id_producto)->first();
+            if ($nuevaPortada) {
+                $nuevaPortada->update(['portada' => true]);
+            }
+        }
 
-    // Ejemplo para cambiar la portada
-    public function setPortada(Producto $producto, ImagenProducto $imagen)
-    {
-        // 1. Ponemos todas las fotos de este producto en false
-        $producto->imagenes()->update(['portada' => false]);
-
-        // 2. Marcamos la seleccionada como true
-        $imagen->update(['portada' => true]);
-
-        return back()->with('flash', 'Portada actualizada');
+        return back()->with('info', 'Imagen eliminada');
     }
 }
