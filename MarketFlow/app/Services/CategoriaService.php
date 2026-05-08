@@ -36,26 +36,29 @@ class CategoriaService
     }
 
     // Funcion para modificar la categoria
-    public function updateCategoria(Categoria $categoria, array $datos) : Categoria
+    public function updateCategoria(int $id, array $datos) : Categoria
     {
-        $categoria -> update([
-            'nombre' => $datos['nombre'] ?? $categoria -> nombre,
-            'descripcion' => $datos['descripcion'] ?? $categoria -> descripcion,
-            'activo' => $datos['activo'] ?? $categoria -> activo
+        $categoria = Categoria::findOrFail($id);
+
+        $categoria->update([
+            'nombre' => $datos['nombre'] ?? $categoria->nombre,
+            'descripcion' => $datos['descripcion'] ?? $categoria->descripcion,
+            'activo' => $datos['activo'] ?? $categoria->activo
         ]);
 
         return $categoria;
     }
 
     // Funcion para solamente desactivarla
-    public function deleteCategoria(Categoria $categoria) : Categoria
+    public function deleteCategoria(int $id) : Categoria
     {
-        $categoria -> update([
-            'activo' => false
-        ]);
+        $categoria = Categoria::findOrFail($id);
+
+        $categoria->update(['activo' => false]);
 
         return $categoria;
     }
+
     // Funcion para eliminar definivamente la categoria
     // public function deleteCategoria(Categoria $categoria): void
     // {

@@ -2,18 +2,21 @@
 
 use App\Livewire\CatalogoVendedor;
 use App\Livewire\AgregarProducto;
+use App\Livewire\CatalogoGeneral;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use Laravel\Jetstream\Jetstream;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', CatalogoGeneral::class)->name('catalogo');
 
 // Esta ruta (Catálogo) la pongo aquí porque necesitamos que no necesite
 // autenticarse por Jetstream
-Route::get('/catalogo', function () {
-    return 'Vista del catálogo en construcción';})->name('catalogo');
+// Route::get('/catalogo', function () {
+//     return 'Vista del catálogo en construcción';})->name('home');
 
 Route::middleware([
     'auth:sanctum',

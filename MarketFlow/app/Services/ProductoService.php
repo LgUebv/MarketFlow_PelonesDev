@@ -65,7 +65,7 @@ class ProductoService
         return $producto->delete();
     }
 
-    // Para la ruta de borrar foto
+    // Para la ruta de borrar foto (aun pendiente)
     public function deleteImage(ImagenProducto $imagen)
     {
         // 1. Borramos el archivo físico del storage de Fedora
@@ -75,7 +75,7 @@ class ProductoService
         return $imagen->delete();
     }
 
-    // Para la ruta de guardar foto individual (si la ocupas después)
+    // Para la ruta de guardar foto individual (aun pendiente)
     public function addImage(Producto $producto, $foto)
     {
         $path = $foto->store('productos', 'public');
