@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\CatalogoVendedor;
+use App\Livewire\AgregarProducto;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use Laravel\Jetstream\Jetstream;
@@ -22,6 +24,12 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+// ruta para productos del vendedor
+Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos');
+
+// ruta para agregar nuevo producto
+Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
 
 // Ruta para productos
 Route::resource('productos', ProductoController::class);

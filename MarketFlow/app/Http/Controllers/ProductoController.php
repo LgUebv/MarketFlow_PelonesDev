@@ -6,6 +6,7 @@ use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\ImagenProducto;
 use App\Http\Requests\ProductoRequest;
+use App\Services\ProductoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,34 +34,13 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductoRequest $request)
+    public function store(ProductoRequest $request, ProductoService $service)
     {
-        // DESCOMENTAR ESTO EN CASO QUE NO HAYA LOGIN AÚN, NO ESTEN LOGEADOS O QUE NO TENGAN USUARIOS PARA ASIGNAR UN USUARIO POR DEFECTO
-        // $producto = Producto::create([
-        //     'id_categoria' => $request->id_categoria,
-        //     'id_user' => auth()->id() ?? 1, // Por si no hay login aún
-        //     'nombre' => $request->nombre,
-        //     'descripcion' => $request->descripcion,
-        //     'stock' => $request->stock,
-        //     'precio' => $request->precio,
-        //     'activo' => true
-        // ]);
-        $producto = Producto::create($request->validated());
-
-        // Revisar si vienen imágenes (usando el nombre 'imagenes' que pusimos en el form)
-        if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $index => $foto) {
-                // Guardar el archivo físicamente
-                $path = $foto->store('productos', 'public');
-
-                // Crear el registro en la base de datos
-                ImagenProducto::create([
-                    'id_producto' => $producto->id_producto, // Usa la variable que creaste arriba
-                    'rutaImagen'  => $path,
-                    'portada'     => ($index === 0) ? true : false, // La primera foto será la portada
-                ]);
-            }
-        }
+        // Pasamos el array validado y el array de archivos por separado
+        $service->guardarProducto(
+            $request->validated(),
+            $request->file('imagenes')
+        );
 
         return redirect()->route('productos.index')->with('success', 'Producto creado con éxito');
     }
@@ -86,87 +66,32 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductoRequest $request, Producto $producto)
+    public function update(ProductoRequest $request, Producto $producto, ProductoService $productoService)
     {
-        $producto->update($request->validated());
+        // Llamada correcta al Service
+        $this->productoService->actualizarProducto(
+            $producto,
+            $request->validated(),
+            $request->file('imagenes')
+        );
 
-        if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $index => $foto) {
-                $path = $foto->store('productos', 'public');
-
-                // PUNTO 3: Checar si ya existe una portada
-                $tienePortada = $producto->imagenes()->where('portada', true)->exists();
-
-                $producto->imagenes()->create([
-                    'rutaImagen' => $path,
-                    // Si NO tiene portada, la primera foto de este loop se vuelve la portada
-                    'portada' => (!$tienePortada && $index === 0) ? true : false
-                ]);
-            }
-        }
-
-        return redirect()->route('productos.index')->with('success', 'Producto actualizado');
+        return redirect()->route('productos.index')->with('success', '¡Actualizado!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, ProductoService $productoService)
     {
         $producto = Producto::findOrFail($id);
-        $producto->delete();
+        $productoService->eliminarProducto($producto);
 
         return redirect()->route('productos.index');
     }
 
-    /**
-     * Función para añadir imágenes a un producto
-     */
-    public function addImagenes(Request $request, Producto $producto)
+    public function destroyImage(ProductoImagen $imagen)
     {
-        $request->validate([
-            'imagenes.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120'
-        ]);
-
-        if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $file) {
-                $path = $file->store('productos', 'public');
-
-                // Creamos la relación
-                $producto->imagenes()->create([
-                    'rutaImagen' => $path,
-                    'portada' => false
-                ]);
-            }
-        }
-
-        return back()->with('success', 'Imágenes añadidas con éxito');
-    }
-
-    /**
-     * Función para eliminar una imagen de un producto
-     */
-    public function destroyImagen(ImagenProducto $imagen)
-    {
-        $id_producto = $imagen->id_producto; // Guardamos el ID del dueño de la foto
-        $eraPortada = $imagen->portada;
-
-        // 1. Borrar archivo físico
-        if (\Storage::disk('public')->exists($imagen->rutaImagen)) {
-            \Storage::disk('public')->delete($imagen->rutaImagen);
-        }
-
-        // 2. Borrar registro
-        $imagen->delete();
-
-        // 3. CAMBIO AUTOMÁTICO: Si borraste la portada, buscar otra foto para que tome el puesto
-        if ($eraPortada) {
-            $nuevaPortada = \App\Models\ImagenProducto::where('id_producto', $id_producto)->first();
-            if ($nuevaPortada) {
-                $nuevaPortada->update(['portada' => true]);
-            }
-        }
-
-        return back()->with('info', 'Imagen eliminada');
+        $this->productoService->deleteImage($imagen);
+        return back()->with('success', 'Imagen eliminada');
     }
 }

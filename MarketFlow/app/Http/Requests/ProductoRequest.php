@@ -28,6 +28,7 @@ class ProductoRequest extends FormRequest
             'descripcion' => 'required',
             'stock' => 'required|integer|min:0',
             'precio' => 'required|numeric|min:0',
+            'portada' => 'required|image|mimes:jpg,png,webp|max:5120',
             'imagenes' => 'nullable|array',
             'imagenes.*' => 'image|mimes:jpg,png,webp|max:5120',
         ];
