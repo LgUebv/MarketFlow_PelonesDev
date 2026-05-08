@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Models\Producto;
-use App\Models\ProductoImagen;
+use App\Models\ImagenProducto;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductoService
 {
-    public function guardarProducto(array $data, $archivoPortada, array $galeria = [])
+    public function guardarProducto(array $datos, $archivoPortada, array $galeria = [])
     {
         try {
             return \DB::transaction(function () use ($datos, $archivoPortada, $galeria) {
@@ -21,7 +21,7 @@ class ProductoService
                     $rutaPortada = $archivoPortada->store('productos', 'public');
                     ImagenProducto::create([
                         'id_producto' => $producto->id_producto,
-                        'ruta'        => $rutaPortada,
+                        'rutaImagen'        => $rutaPortada,
                         'portada'     => 1, // marcamos esta imagen como portada
                     ]);
                 }
@@ -31,7 +31,7 @@ class ProductoService
                     $rutaFoto = $foto->store('productos', 'public');
                     ImagenProducto::create([
                         'id_producto' => $producto->id_producto,
-                        'ruta'        => $rutaFoto,
+                        'rutaImagen'        => $rutaFoto,
                         'portada'     => 0
                     ]);
                 }
@@ -66,7 +66,7 @@ class ProductoService
     }
 
     // Para la ruta de borrar foto
-    public function deleteImage(ProductoImagen $imagen)
+    public function deleteImage(ImagenProducto $imagen)
     {
         // 1. Borramos el archivo físico del storage de Fedora
         Storage::disk('public')->delete($imagen->rutaImagen);

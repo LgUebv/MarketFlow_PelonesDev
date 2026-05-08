@@ -29,8 +29,8 @@ class ProductoRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'precio' => 'required|numeric|min:0',
             'portada' => 'required|image|mimes:jpg,png,webp|max:5120',
-            'imagenes' => 'nullable|array',
-            'imagenes.*' => 'image|mimes:jpg,png,webp|max:5120',
+            'fotos_extra' => 'nullable|array|max:4',
+            'fotos_extra.*' => 'image|mimes:jpg,png,webp|max:5120',
         ];
     }
 }

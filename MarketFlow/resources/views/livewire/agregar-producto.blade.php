@@ -87,19 +87,12 @@
                             @for ($i = 0; $i < 4; $i++)
                                 <div
                                     class="w-28 h-28 bg-gray-200 rounded-lg flex items-center justify-center relative hover:bg-gray-300 transition cursor-pointer overflow-hidden">
-                                    <input type="file" wire:model="imagenes.{{ $i }}"
+                                    <input type="file" wire:model="fotos_extra.{{ $i }}"
                                         class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                        accept="image/*"
-                                        id="upload{{ $i }}" multiple>
-                                    @if ($imagenes && is_array($imagenes))
-                                        @foreach ($imagenes as $index => $imagen)
-                                            {{-- Usamos el $index para que Livewire no se confunda --}}
-                                            <div wire:key="foto-{{ $index }}">
-                                                @if(!is_array($imagen))
-                                                    <img src="{{ $imagen->temporaryUrl() }}" class="w-20 h-20 object-cover rounded-lg border">
-                                                @endif
-                                            </div>
-                                        @endforeach
+                                        accept="image/*">
+                                    @if (isset($fotos_extra[$i]))
+                                        <img src="{{ $fotos_extra[$i]->temporaryUrl() }}"
+                                            class="w-full h-full object-cover">
                                     @else
                                         <span class="text-gray-400 font-bold text-2xl">+</span>
                                     @endif

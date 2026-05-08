@@ -17,13 +17,13 @@ class AgregarProducto extends Component
 
     public $id_producto_editar;
     public $nombre, $id_categoria = '', $descripcion, $precio, $stock, $activo = 1;
-    public $portada, $imagenes = [];
+    public $portada, $fotos_extra = [];
 
     // 1. Cuando hacen clic en "+ Nuevo Producto", reseteamos las variables
     #[On('abrir-formulario')]
     public function prepararNuevoProducto()
     {
-        $this->reset(['id_producto_editar', 'nombre', 'id_categoria', 'descripcion', 'precio', 'stock', 'portada', 'imagenes']);
+        $this->reset(['id_producto_editar', 'nombre', 'id_categoria', 'descripcion', 'precio', 'stock', 'portada', 'fotos_extra']);
         $this->activo = 1;
     }
 
@@ -34,8 +34,8 @@ class AgregarProducto extends Component
         $this->id_producto_editar = $id;
 
         $producto = Producto::where('id_user', Auth::id())
-                           ->where('id_producto', $id)
-                           ->first();
+                            ->where('id_producto', $id)
+                            ->first();
 
         if ($producto) {
             $this->nombre = $producto->nombre;
@@ -57,16 +57,16 @@ class AgregarProducto extends Component
 
         // Separamos los archivos de los datos de la tabla 'productos'
         $portadaFile = $this->portada;
-        $galeriaFiles = $this->imagenes;
+        $galeriaFiles = array_filter($this->fotos_extra);
 
         // Limpiamos el array para el Modelo Producto
-        unset($datosValidados['portada'], $datosValidados['imagenes']);
+        unset($datosValidados['portada'], $datosValidados['fotos_extra']);
 
-        // 3. Agregamos el id_user manual (mientras arreglas el login)
+        // 3. Agregamos el id_user manual (mientras se arregla el login)
         $datosValidados['id_user'] = 1;
 
         // 4. Mandamos al Service
-        $productoService->crearProducto($datosValidados, $portadaFile, $galeriaFiles);
+        $productoService->guardarProducto($datosValidados, $portadaFile, $galeriaFiles);
 
         return redirect()->route('vendedor.productos');
     }
