@@ -49,6 +49,12 @@ class CategoriaService
         return $categoria;
     }
 
+    // Funcion para obtener los datos por ID
+    public function getForId(int $id) : Categoria
+    {
+        return Categoria::findOrFail($id);
+    }
+
     // Funcion para solamente desactivarla
     public function deleteCategoria(int $id) : Categoria
     {

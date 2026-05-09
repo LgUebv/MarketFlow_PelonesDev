@@ -5,6 +5,9 @@ use App\Livewire\AgregarProducto;
 use App\Livewire\CatalogoGeneral;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Livewire\ModificarCategoria;
+use App\Livewire\CrearCategoria;
+use App\Livewire\VerCategorias;
 use App\Livewire\CrearDireccion;
 use App\Livewire\ModificarDireccion;
 use App\Livewire\VerDirecciones;
@@ -46,6 +49,11 @@ Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.produ
 
 // // Para añadir nuevas imágenes desde el modal
 // Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
+
+// RUTAS PARA LAS CATEGORIAS
+Route::get('/categorias', VerCategorias::class)->name('categorias');
+Route::get('/categorias/create', CrearCategoria::class)->name('categorias.crear');
+Route::get('/categorias/{id}/update', ModificarCategoria::class)->name('categorias.modificar');
 
 // RUTAS PARA LAS DIRECCIONES
 Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
