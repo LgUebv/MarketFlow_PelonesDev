@@ -10,14 +10,15 @@
             class="font-body w-[500px] border-2 border-brand-blue-100 rounded-lg px-4 py-2 focus:border-brand-blue-300 focus:ring-0 text-main-black transition-all"
             placeholder="Buscar direccion...">
 
-        <a href=" {{ route('direcciones.create') }} "
+        {{-- Igual este boton no creo que lo necesite  --}}
+        {{-- <a href=" {{ route('direcciones.create') }} "
             class="bg-brand-blue-400 text-white px-6 py-2 rounded-lg font-body font-bold hover:bg-brand-blue-300 transition-all active:scale-95 shadow-md flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2001/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Agregar
-        </a>
+        </a> --}}
     </div>
 
     <div class="mt-4">
@@ -39,8 +40,8 @@
                             <th class="px-6 py-4 text-center">Estado</th>
                             <th class="px-6 py-4 text-center">Colonia</th>
                             <th class="px-6 py-4 text-center">Referencias</th>
-                            <th class="px-6 py-4 text-center">Acciones</th>
-                        </tr>
+                            {{-- <th class="px-6 py-4 text-center">Acciones</th>
+                        </tr> --}}
                     </thead>
 
                     <tbody class="font-body text-[16px] text-main-black divide-y divide-gray-100">
@@ -68,10 +69,11 @@
                                     {{ $item->colonia }}
                                 </td>
                                 <td class="px-6 py-4 text-gray-600">
-                                    {{ $item->referencias }}
+                                    {{ $item->refencias }}
                                 </td>
-
-                                <td class="px-6 py-4">
+                                {{-- Esta parte la comento por que el administrador solo puede ver las direcciones
+                                pero no puede hacer nada en ellas --}}
+                                {{-- <td class="px-6 py-4">
                                     <div class="flex justify-center gap-3">
                                         <a href="{{ route('direcciones.update', $item->id_direccion) }}" wire:navigate
                                             class="inline-block p-2 bg-btn-success text-white rounded-lg hover:scale-110 transition-transform shadow-sm focus:outline-none"
@@ -95,7 +97,7 @@
                                             </svg>
                                         </button>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>

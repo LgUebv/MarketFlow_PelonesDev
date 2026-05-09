@@ -71,7 +71,7 @@
                                         {{ $item->colonia }}
                                     </td>
                                     <td class="px-6 py-4 text-gray-600 text-center">
-                                        {{ $item->referencias ?: 'Sin referencias' }}
+                                        {{ $item->refencias ?: 'Sin referencias' }}
                                     </td>
 
                                     <td class="px-6 py-4">

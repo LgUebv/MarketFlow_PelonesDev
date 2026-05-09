@@ -9,6 +9,7 @@ class ModificarDireccion extends Component
 {
 
     public $id_direccion;
+    public $id_user;
     public $ciudad = '';
     public $calle = '';
     public $codigo_postal = '';
@@ -52,12 +53,12 @@ class ModificarDireccion extends Component
         $direccionService->updateDireccion($this->id_direccion, $datos);
 
         session()->flash('message', 'Dirección actualizada con éxito.');
-        return redirect()->route('direcciones.index');
+        return redirect()->route('direcciones.user.index');
     }
 
     public function cancelar()
     {
-        return redirect()->back();
+        return redirect()->route('direcciones.user.index');
     }
 
     public function render()

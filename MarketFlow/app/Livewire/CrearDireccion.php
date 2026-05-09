@@ -30,20 +30,17 @@ class CrearDireccion extends Component
 
     public function guardar(DireccionService $direccionService)
     {
-        // 2. Ejecutar validación
         $datos = $this->validate();
 
-        // 3. Pasar los datos validados al servicio
         $direccionService->createDireccion($datos);
 
-        // 4. Feedback y Redirección
         session()->flash('message', 'Dirección guardada exitosamente.');
-        return redirect()->back();
+        return redirect()->route('direcciones.user.index');
     }
 
     public function cancelar()
     {
-        return redirect()->route('direcciones.index');
+        return redirect()->route('direcciones.user.index');
     }
 
     public function render()
