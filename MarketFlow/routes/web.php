@@ -5,6 +5,10 @@ use App\Livewire\AgregarProducto;
 use App\Livewire\CatalogoGeneral;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Livewire\CrearDireccion;
+use App\Livewire\ModificarDireccion;
+use App\Livewire\VerDirecciones;
+use App\Livewire\VerMisDirecciones;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -35,10 +39,16 @@ Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos'
 Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
 
 // Ruta para productos
-Route::resource('productos', ProductoController::class);
+// Route::resource('productos', ProductoController::class);
 
-// Para borrar una imagen específica
-Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
+// // Para borrar una imagen específica
+// Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
 
-// Para añadir nuevas imágenes desde el modal
-Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
+// // Para añadir nuevas imágenes desde el modal
+// Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
+
+// RUTAS PARA LAS DIRECCIONES
+Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
+Route::get('/direcciones/crear', CrearDireccion::class)->name('direcciones.create');
+Route::get('/direcciones/{id}/update', ModificarDireccion::class)->name('direcciones.update');
+Route::get('/direcciones/mis-direcciones', VerMisDirecciones::class)->name('direcciones.user.index');
