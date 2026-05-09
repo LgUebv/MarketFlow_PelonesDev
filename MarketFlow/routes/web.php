@@ -5,6 +5,9 @@ use App\Livewire\AgregarProducto;
 use App\Livewire\CatalogoGeneral;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Livewire\ModificarCategoria;
+use App\Livewire\CrearCategoria;
+use App\Livewire\VerCategorias;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -34,11 +37,16 @@ Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos'
 // ruta para agregar nuevo producto
 Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
 
-// Ruta para productos
-Route::resource('productos', ProductoController::class);
+// // Ruta para productos
+// Route::resource('productos', ProductoController::class);
 
-// Para borrar una imagen específica
-Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
+// // Para borrar una imagen específica
+// Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
 
-// Para añadir nuevas imágenes desde el modal
-Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
+// // Para añadir nuevas imágenes desde el modal
+// Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
+
+// RUTAS PARA LAS CATEGORIAS
+Route::get('/categorias', VerCategorias::class)->name('categorias');
+Route::get('/categorias/create', CrearCategoria::class)->name('categorias.crear');
+Route::get('/categorias/{id}/update', ModificarCategoria::class)->name('categorias.modificar');
