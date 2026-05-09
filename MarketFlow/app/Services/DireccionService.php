@@ -35,6 +35,13 @@ class DireccionService
                         ->get();
     }
 
+    public function getForId(int $id)
+    {
+        return Auth::user()
+            ->direcciones()
+            ->findOrFail($id);
+    }
+
     // Funcion para crear una direccion
     public function createDireccion(array $datos): Direccion
     {

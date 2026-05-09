@@ -8,6 +8,10 @@ use App\Http\Controllers\ProductoController;
 use App\Livewire\ModificarCategoria;
 use App\Livewire\CrearCategoria;
 use App\Livewire\VerCategorias;
+use App\Livewire\CrearDireccion;
+use App\Livewire\ModificarDireccion;
+use App\Livewire\VerDirecciones;
+use App\Livewire\VerMisDirecciones;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -37,7 +41,7 @@ Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos'
 // ruta para agregar nuevo producto
 Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
 
-// // Ruta para productos
+// Ruta para productos
 // Route::resource('productos', ProductoController::class);
 
 // // Para borrar una imagen específica
@@ -50,3 +54,9 @@ Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.produ
 Route::get('/categorias', VerCategorias::class)->name('categorias');
 Route::get('/categorias/create', CrearCategoria::class)->name('categorias.crear');
 Route::get('/categorias/{id}/update', ModificarCategoria::class)->name('categorias.modificar');
+
+// RUTAS PARA LAS DIRECCIONES
+Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
+Route::get('/direcciones/crear', CrearDireccion::class)->name('direcciones.create');
+Route::get('/direcciones/{id}/update', ModificarDireccion::class)->name('direcciones.update');
+Route::get('/direcciones/mis-direcciones', VerMisDirecciones::class)->name('direcciones.user.index');
