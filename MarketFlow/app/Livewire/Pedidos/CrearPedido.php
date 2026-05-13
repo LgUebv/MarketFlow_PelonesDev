@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Pedidos;
 
+use App\Services\DireccionService;
+use App\Models\Carrito;
+use App\Models\Pedido;
 use Livewire\Component;
 
 class CrearPedido extends Component
@@ -14,6 +17,21 @@ class CrearPedido extends Component
 
     public function render()
     {
-        return view('livewire.pedidos.crear-pedido')->layout('layouts.app');
+        return view('livewire.pedidos.crear-pedido', [
+                    'direcciones' => $this->getDireccionesList()
+                    ])->layout('layouts.app');
+    }
+
+    // Función para obtener las direcciones del usuario autenticado
+    protected function getDireccionesList()
+    {
+        return app(DireccionService::class)
+            ->getMiDireccion()
+            ->map(function ($direccion) {
+                return [
+                    'id' => $direccion->id,
+                    'texto' => "Calle: {$direccion->calle}, #{$direccion->numero_ext}, Colonia: {$direccion->colonia}, CP: {$direccion->codigo_postal}"
+                ];
+            });
     }
 }
