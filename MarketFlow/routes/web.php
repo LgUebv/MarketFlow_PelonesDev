@@ -12,6 +12,7 @@ use App\Livewire\CrearDireccion;
 use App\Livewire\ModificarDireccion;
 use App\Livewire\VerDirecciones;
 use App\Livewire\VerMisDirecciones;
+use App\Livewire\Pedidos\CrearPedido;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -72,3 +73,6 @@ Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
 Route::get('/direcciones/crear', CrearDireccion::class)->name('direcciones.create');
 Route::get('/direcciones/{id}/update', ModificarDireccion::class)->name('direcciones.update');
 Route::get('/direcciones/mis-direcciones', VerMisDirecciones::class)->name('direcciones.user.index');
+
+// RUTAS PARA LOS PEDIDOS
+Route::get('/pedidos/crear', CrearPedido::class)->name('pedidos.create');
