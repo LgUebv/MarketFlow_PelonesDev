@@ -39,4 +39,16 @@ class PanelAdminService
 
         return $consulta -> orderBy('created_at', 'desc') -> get();
     }
+
+    // Funcion para mostrar el numero total de usuarios registrados
+    public function getCountUsers() : int
+    {
+        return User::count();
+    }
+
+    // Funcion para mostrar el numero total de productos registrados
+    public function getCountProductos() : int
+    {
+        return Producto::count();
+    }
 }
