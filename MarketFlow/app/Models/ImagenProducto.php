@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ImagenProducto extends Model
 {
@@ -40,5 +41,12 @@ class ImagenProducto extends Model
         // En la tabla 'imagenes' se llama 'id_producto'
         // En la tabla 'productos' se llama 'id_producto'
         return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
+    }
+
+    public function getUrlAttribute()
+    {
+        return Str::startsWith($this->rutaImagen, 'http')
+                    ? $this->rutaImagen
+                    : asset($this->rutaImagen);
     }
 }
