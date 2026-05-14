@@ -52,7 +52,7 @@ class CarritoService
         $item->update(['cantidad' => $cantidad]);
     }
 
-    public function getCarrito()
+    public function getCarrito() : Collection
     {
         return Carrito::with('producto')
                             ->where('id_user', Auth::id())
