@@ -66,7 +66,7 @@ class CarritoService
 
     public function eliminarItem(int $idItem): void
     {
-        Carrito::where('id', $idItem)
+        Carrito::where('id_carrito', $idItem)
             ->where('id_user', Auth::id())
             ->delete();
     }
