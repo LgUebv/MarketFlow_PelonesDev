@@ -1,4 +1,4 @@
-<x-app-layout>
+<div>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-bold text-2xl text-gray-800 leading-tight">
@@ -13,7 +13,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl p-8">
-                
+
                 <div class="flex justify-between items-center mb-8">
                     <h3 class="text-xl font-bold text-gray-800">Historial de Pedidos</h3>
                     <a href="{{ route('catalogo') }}" class="bg-[#5C7AA3] hover:bg-[#274472] text-white px-5 py-2.5 rounded-md text-sm font-semibold transition">
@@ -33,39 +33,35 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-600">
-                            
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-                                <td class="py-4 font-medium text-gray-900">#ORD-00123</td>
-                                <td class="py-4">12 May 2026</td>
-                                <td class="py-4 font-medium">$1,250.00</td>
-                                <td class="py-4">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                                        Entregado
-                                    </span>
-                                </td>
-                                <td class="py-4">
-                                    <button class="text-gray-400 hover:text-[#274472] transition flex items-center">
-                                        <x-heroicon-o-eye class="w-5 h-5 me-1" />
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-                                <td class="py-4 font-medium text-gray-900">#ORD-00124</td>
-                                <td class="py-4">10 May 2026</td>
-                                <td class="py-4 font-medium">$450.50</td>
-                                <td class="py-4">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                        En camino
-                                    </span>
-                                </td>
-                                <td class="py-4">
-                                    <button class="text-gray-400 hover:text-[#274472] transition flex items-center">
-                                        <x-heroicon-o-eye class="w-5 h-5 me-1" />
-                                    </button>
-                                </td>
-                            </tr>
-
+                            @forelse($pedidos as $pedido)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
+                                        #{{ $pedido->folio }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $pedido->created_at->format('d M Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        ${{ number_format($pedido->totalCompra, 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Entregado
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-gray-400 hover:text-indigo-600">
+                                            <x-heroicon-o-eye class="w-5 h-5"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                                        Aún no has realizado ninguna compra.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -84,8 +80,7 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
