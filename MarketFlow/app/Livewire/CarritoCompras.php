@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Carrito;
 use Livewire\Attributes\On;
 use App\Services\CarritoService;
 
@@ -32,7 +33,7 @@ class CarritoCompras extends Component
         try {
             $this->mensajeError = '';
             $servicio->addItem($idProducto, 1);
-            $this->isOpen = true; 
+            $this->isOpen = true;
         } catch (\Exception $e) {
             $this->mensajeError = $e->getMessage();
         }
@@ -90,5 +91,17 @@ class CarritoCompras extends Component
             'items' => $items,
             'total' => $total
         ]);
+    }
+
+    public function irAlPago()
+    {
+        // Opcional: Validar aquí si el carrito no está vacío antes de mandarlo
+        $existeCarrito = Carrito::where('id_user', auth()->id())->exists();
+
+        if ($existeCarrito) {
+            return redirect()->route('pedidos.create');
+        } else {
+            $this->dispatch('error', ['message' => 'Tu carrito está vacío']);
+        }
     }
 }

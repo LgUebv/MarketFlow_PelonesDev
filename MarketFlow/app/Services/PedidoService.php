@@ -37,12 +37,13 @@ class PedidoService
             }
 
             // 3. Limpiar el carrito del usuario
-            Carrito::where('id_users', auth()->id())->delete();
+            Carrito::where('id_user', auth()->id())->delete();
 
             return $pedido;
         });
     }
 
+    // Función para generar un folio único para cada pedido
     private function generarFolioUnico()
     {
         do {
@@ -51,5 +52,13 @@ class PedidoService
         } while (Pedido::where('folio', $folio)->exists());
 
         return $folio;
+    }
+
+    // Función para obtener el historial de pedidos del usuario autenticado
+    public function obtenerHistorialUsuario()
+    {
+        return Pedido::where('id_user', auth()->id())
+            ->orderBy('created_at', 'desc') // Los más recientes primero
+            ->get();
     }
 }

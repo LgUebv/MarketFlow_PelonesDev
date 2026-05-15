@@ -13,6 +13,7 @@ use App\Livewire\ModificarDireccion;
 use App\Livewire\VerDirecciones;
 use App\Livewire\VerMisDirecciones;
 use App\Livewire\CrearPedido;
+use App\Livewire\MisCompras;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -43,9 +44,9 @@ Route::middleware([
     'verified',
     'role:comprador' // Esto asegura que solo los compradores entren
 ])->group(function () {
-    Route::get('/mis-compras', function () {
-        return view('mis-compras');
-    })->name('mis-compras');
+
+    // Rutas para mostrar el historial de pedidos del comprador
+    Route::get('/mis-compras', MisCompras::class)->name('mis-compras');
 });
 
 // ruta para productos del vendedor
