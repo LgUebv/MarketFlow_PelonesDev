@@ -5,9 +5,22 @@
             {{-- BLOQUE IZQUIERDO: Logo y Enlaces Principales --}}
             <div class="flex items-center">
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
-                    </a>
+                    @auth
+                        @role('vendedor')
+                            <a href="{{ route('dashboard') }}">
+                                <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
+                            </a>
+                        @endrole
+                        @role('comprador')
+                            <a href="{{ route('catalogo') }}">
+                                <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
+                            </a>
+                        @endrole
+                    @else
+                        <a href="{{ route('catalogo') }}">
+                            <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
+                        </a>
+                    @endauth
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
