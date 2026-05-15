@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Collection;
 use App\Models\User;
 use App\Models\Producto;
-
+use App\Models\Pedido;
 class PanelAdminService
 {
     // Funcion para mostrar todos los usuarios
@@ -50,5 +50,29 @@ class PanelAdminService
     public function getCountProductos() : int
     {
         return Producto::count();
+    }
+
+    // Funcion para mostrar el total de vendedores
+    public function getCountVendedores() : int
+    {
+        return User::role('vendedor')->count();
+    }
+
+    // Funcion para mostrar los usuarios que son vendores (te lo dejo opcional we)
+    public function getVendedores() : Collection
+    {
+        return User::role('vendedor')->get();
+    }
+
+    // Funcion para ver el numero de clientes
+    public function getCountClientes() : int
+    {
+        return User::role('comprador')->count();
+    }
+
+    // Funcion para ver el numero de pedidos
+    public function getCountPedidos() : int
+    {
+        return Pedido::count();
     }
 }
