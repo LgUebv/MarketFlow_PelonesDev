@@ -45,8 +45,16 @@ class ImagenProducto extends Model
 
     public function getUrlAttribute()
     {
-        return Str::startsWith($this->rutaImagen, 'http')
-                    ? $this->rutaImagen
-                    : asset($this->rutaImagen);
+        if (Str::startsWith($this->rutaImagen, 'http'))
+        {
+            return $this->rutaImagen;
+        }
+
+        if (Str::startsWith($this->rutaImagen, 'storage/'))
+        {
+            return asset($this->rutaImagen);
+        }
+
+        return asset('storage/' . $this->rutaImagen);
     }
 }

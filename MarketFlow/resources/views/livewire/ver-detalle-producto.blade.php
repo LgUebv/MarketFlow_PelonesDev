@@ -82,51 +82,66 @@
             <!-- CAJA DE CONTROLES -->
             <div class="bg-gray-50 border border-gray-100 p-6 rounded-sm mt-8">
 
-                <label for="cantidad" class="block text-sm font-semibold text-gray-700 mb-3">
-                    ¿Cuántas unidades deseas llevar?
-                </label>
+                @auth
+                    @role('comprador')
+                        <label for="cantidad" class="block text-sm font-semibold text-gray-700 mb-3">
+                            ¿Cuántas unidades deseas llevar?
+                        </label>
+                    @endrole
+                @endauth
 
                 <div class="flex flex-col sm:flex-row items-start gap-4">
 
-                    <!-- Input de cantidad -->
-                    <div class="relative w-full sm:w-1/3">
-                        <input type="number" id="cantidad" wire:model="cantidad" min="1"
-                            max="{{ $producto->stock }}"
-                            class="w-full pl-4 pr-12 py-3 text-center border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500 text-sm font-bold text-gray-800 shadow-sm bg-white">
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                        </div>
-                    </div>
+                    @auth
+                        @role('comprador')
+                            <div class="relative w-full sm:w-1/3">
+                                <input type="number" id="cantidad" wire:model="cantidad" min="1"
+                                    max="{{ $producto->stock }}"
+                                    class="w-full pl-4 pr-12 py-3 text-center border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500 text-sm font-bold text-gray-800 shadow-sm bg-white">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                                </div>
+                            </div>
+                        @endrole
+                    @endauth
 
-                    <!-- Zona de Botones Apilados -->
-                    <div class="w-full sm:w-2/3 flex flex-col gap-3">
+                    <div class="w-full @auth @role('comprador') sm:w-2/3 @endrole @endauth flex flex-col gap-3">
 
-                        <!-- Botón 1: Comprar Ahora (El Principal) -->
-                        <button wire:click="comprarAhora"
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-sm transition-colors text-sm tracking-wide shadow-sm flex justify-center items-center gap-2">
-                            <!-- Ícono de Rayo / Acción rápida -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                            </svg>
-                            Comprar ahora
-                        </button>
+                        @auth
+                            @role('comprador')
+                                <button wire:click="agregar"
+                                    class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-medium py-3 px-4 rounded-sm transition-colors text-sm tracking-wide shadow-sm flex justify-center items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                    </svg>
+                                    Agregar al carrito
+                                </button>
+                            @endrole
 
-                        <!-- Botón 2: Agregar al Carrito (El Secundario) -->
-                        <button wire:click="agregar"
-                            class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-medium py-3 px-4 rounded-sm transition-colors text-sm tracking-wide shadow-sm flex justify-center items-center gap-2">
-                            <!-- Ícono de carrito -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                            </svg>
-                            Agregar al carrito
-                        </button>
+                            @role('vendedor')
+                                <button disabled
+                                    class="w-full bg-gray-100 text-gray-400 font-medium py-3 px-4 rounded-sm border border-gray-200 cursor-not-allowed flex justify-center items-center gap-2"
+                                    title="Los vendedores no pueden realizar compras">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                    </svg>
+                                    Modo Vendedor (Compras deshabilitadas)
+                                </button>
+                            @endrole
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="w-full bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-medium py-3 px-4 rounded-sm transition-colors text-sm tracking-wide text-center block">
+                                Inicia sesión para comprar
+                            </a>
+                        @endauth
 
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>
+    </div> <livewire:carrito-compras />
+</div>
