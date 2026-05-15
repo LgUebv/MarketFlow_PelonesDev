@@ -34,6 +34,10 @@
                         <x-nav-link href="{{ route('mis-compras') }}" :active="request()->routeIs('mis-compras')">
                             {{ __('Mis Compras') }}
                         </x-nav-link>
+
+                        <x-nav-link href="{{ route('direcciones.user.index') }}" :active="request()->routeIs('direcciones.user.index')">
+                            {{ __('Mis Direcciones') }}
+                        </x-nav-link>
                     @endrole
                 </div>
             </div>
