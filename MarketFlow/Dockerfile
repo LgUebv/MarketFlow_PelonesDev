@@ -35,3 +35,15 @@ RUN chown -R www-data:www-data /var/www/html
 # Instalar Node.js y NPM para poder compilar Jetstream/Tailwind
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
+
+# AJUSTES PARA DESPLEGAR EN PRODUCCIÓN
+# 1. Copiar todo el código del proyecto al directorio de trabajo
+COPY . /var/www/html
+
+# 2. Instalar las dependencias de Composer sin interacción
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-interaction --optimize-autoloader
+
+# 3. Darle los permisos correctos a las carpetas de Laravel
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
