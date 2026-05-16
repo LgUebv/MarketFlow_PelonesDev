@@ -18,6 +18,7 @@ export default {
                 'btn-buy': '#E98800',
                 'btn-success': '#00AB1F',
                 'btn-danger': '#B20000',
+                'market-dark': '#0E1A2B',
 
                 //Color del texto
                 'main-black': '#000000',
@@ -30,6 +31,9 @@ export default {
                     300: '#1B3454',
                     400: '#0E1A2B',
                 },
+            },
+            borderRadius: {
+                    '2xl': '2.5rem',
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
