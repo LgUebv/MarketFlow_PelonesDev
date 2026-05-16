@@ -18,7 +18,7 @@ echo "Generando llave de seguridad de laravel......."
 docker exec marketflow_app php artisan key:generate
 
 echo "Cambiando los permisos....."
-# Backend
+
 docker exec marketflow_app chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 docker exec marketflow_app chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
@@ -36,6 +36,22 @@ echo "Aplicación: http://localhost:8080"
 # docker exec -it marketflow_container chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 # docker exec -it marketflow_container chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Comando para poder correr y compilar la parte de las vistas de Jetstream
+# docker exec -it marketflow_app npm run build
+
+# Comando para ejecutar el seeder y reiniciar toda la base de datos
+# docker exec -it marketflow_app php artisan migrate:fresh --seed
+
+# Comando para ejecutar el seeder de roles y permisos
+# docker exec -it marketflow_app php artisan db:seed --class=RolesYPermisosSeeder
+
+# Comando para cuando de algún tipo de error al momento de guardar algun archivo y te pida ser administrador
+# sudo chown -R $USER:$USER .
+
 # En dado caso que haya fallado algo pongan este comando:
 # docker compose down -v --rmi all
 # Borra todo lo que se hizo con el docker compose es como el botón de panico
+
+# Para limpiar la cache de las vistas y la cache general de laravel.
+# docker exec -it marketflow_app php artisan view:clear
+# docker exec -it marketflow_app php artisan cache:clear

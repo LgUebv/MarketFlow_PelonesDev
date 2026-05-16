@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ImagenProducto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +30,7 @@ class Producto extends Model
         // pertenece a una categoria (belongsTo)
         // En la tabla 'categorias' se llama 'id_categoria'
         // En esta tabla 'productos' se llama 'id_categoria'
-        return $this->belongsTo(Categorias::class, 'id_categoria', 'id_categoria');
+        return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
     }
 
     public function user()
@@ -45,6 +46,12 @@ class Producto extends Model
         // tiene muchas imagenes (hasMany)
         // En la tabla 'imagenes' se llama 'id_producto'
         // En esta tabla 'productos' se llama 'id_producto'
-        return $this->hasMany(Imagenes::class, 'id_producto', 'id_producto');
+        return $this->hasMany(ImagenProducto::class, 'id_producto', 'id_producto');
+    }
+
+    public function portada()
+    {
+        // Trae solo una imagen donde portada sea true (1)
+        return $this->hasOne(ImagenProducto::class, 'id_producto')->where('portada', 1);
     }
 }

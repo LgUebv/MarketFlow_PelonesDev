@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Producto;
 
 class Categoria extends Model
 {
@@ -25,6 +26,6 @@ class Categoria extends Model
         // tiene muchos productos (hasMany)
         // En la tabla 'productos' se llama 'id_categoria'
         // En esta tabla 'categorias' se llama 'id_categoria'
-        return $this->hasMany(Productos::class, 'id_categoria', 'id_categoria');
+        return $this->hasMany(Producto::class, 'id_categoria', 'id_categoria');
     }
 }
