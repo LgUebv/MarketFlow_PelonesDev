@@ -26,30 +26,24 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && a2enmod rewrite headers
 
-# Código y dependencias
 WORKDIR /var/www/html
 
-# Primero composer.json para cachear dependencias
-COPY composer.json composer.lock ./
+# Todo el código primero (artisan ya está presente)
+COPY . .
+
+# Dependencias PHP
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Luego package.json para cachear npm
-COPY package.json package-lock.json vite.config.js ./
-COPY resources/ resources/
+# Assets de Node
 RUN npm ci && npm run build
-
-# Ahora sí todo el código
-COPY . .
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Entry point
 EXPOSE 80
 
-# Railway inyecta $PORT → lo mapeamos en Apache
 CMD bash -c "echo 'PORT es: '${PORT:-80} \
     && sed -i 's/Listen 80/Listen ${PORT:-80}/g' /etc/apache2/ports.conf \
     && sed -i 's/:80>/:${PORT:-80}>/g' /etc/apache2/sites-available/*.conf \
