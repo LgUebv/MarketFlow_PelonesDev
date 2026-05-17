@@ -42,7 +42,13 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-EXPOSE 80
+    # Permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
+
+# Fix MPM
+RUN a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
 
 EXPOSE 80
 
