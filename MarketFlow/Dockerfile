@@ -44,7 +44,5 @@ RUN chown -R www-data:www-data /var/www/html \
 
 EXPOSE 80
 
-CMD bash -c "echo 'PORT es: '${PORT:-80} \
-    && sed -i 's/Listen 80/Listen ${PORT:-80}/g' /etc/apache2/ports.conf \
-    && sed -i 's/:80>/:${PORT:-80}>/g' /etc/apache2/sites-available/*.conf \
-    && apache2-foreground"
+EXPOSE 80
+
