@@ -1,5 +1,11 @@
 <?php
 
+use App\Livewire\Admin\ConsultarProductos;
+use App\Livewire\Admin\ConsultarUsuarios;
+use App\Livewire\Admin\ConsultarVentas;
+use App\Livewire\Admin\CrearProducto;
+use App\Livewire\Admin\CrearUsuarios;
+use App\Livewire\Admin\ModificarUsuarios;
 use App\Livewire\Admin\Panel;
 use App\Livewire\CatalogoVendedor;
 use App\Livewire\AgregarProducto;
@@ -16,6 +22,7 @@ use App\Livewire\VerDirecciones;
 use App\Livewire\VerMisDirecciones;
 use App\Livewire\CrearPedido;
 use App\Livewire\MisCompras;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -33,22 +40,27 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:vendedor'
 ])->group(function () {
+
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        if (Auth::user()->hasRole('vendedor')) {
+            return view('dashboard');
+        }
+
+        if (Auth::user()->hasRole('comprador')) {
+            return redirect()->route('mis-compras');
+        }
+
+        abort(403);
     })->name('dashboard');
-});
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-    'role:comprador' // Esto asegura que solo los compradores entren
-])->group(function () {
+    Route::middleware('role:vendedor')->group(function () {
+    });
 
-    // Rutas para mostrar el historial de pedidos del comprador
-    Route::get('/mis-compras', MisCompras::class)->name('mis-compras');
+    Route::middleware('role:comprador')->group(function () {
+        Route::get('/mis-compras', MisCompras::class)->name('mis-compras');
+    });
+
 });
 
 // ruta para productos del vendedor
@@ -85,4 +97,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/categorias', VerCategorias::class)->name('categorias');
     Route::get('/categorias/create', CrearCategoria::class)->name('categorias.crear');
     Route::get('/categorias/{id}/update', ModificarCategoria::class)->name('categorias.modificar');
+    // RUTAS PARA LOS USUARIOS
+    Route::get('/admin/usuarios', ConsultarUsuarios::class)->name('admin.usuarios');
+    Route::get('/admin/usuarios/modificar/{id}', ModificarUsuarios::class)->name('usuarios.modificar');
+    Route::get('/admin/usuarios/crear', CrearUsuarios::class)->name('usuarios.crear');
+    // RUTAS PARA LOS PRODUCTOS
+    Route::get('/admin/productos', ConsultarProductos::class)->name('admin.productos');
+    Route::get('/admin/productos/create', CrearProducto::class)->name('productos.crear');
+    Route::get('/admin/productos/{id}/update', App\Livewire\Admin\ModificarProducto::class)->name('productos.modificar');
+    // RUTA PARA VER LOS PEDIDOS
+    Route::get('/admin/ventas', ConsultarVentas::class)->name('admin.ventas');
 });

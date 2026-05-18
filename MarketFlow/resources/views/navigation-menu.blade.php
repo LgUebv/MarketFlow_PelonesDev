@@ -16,6 +16,11 @@
                                 <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
                             </a>
                         @endrole
+                        @role('admin')
+                            <a href="{{ route('catalogo') }}">
+                                <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
+                            </a>
+                        @endrole
                     @else
                         <a href="{{ route('catalogo') }}">
                             <span class="text-2xl font-black text-[#274472] tracking-tighter">MarketFlow</span>
@@ -23,7 +28,7 @@
                     @endauth
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="flex space-x-4 sm:space-x-8 ms-4 sm:ms-10 sm:-my-px">
                     @role('vendedor')
                         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{ __('Mi Panel') }}
