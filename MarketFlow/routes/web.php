@@ -69,16 +69,6 @@ Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos'
 // ruta para agregar nuevo producto
 Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
 
-// Ruta para productos
-// Route::resource('productos', ProductoController::class);
-
-// // Para borrar una imagen específica
-// Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
-
-// // Para añadir nuevas imágenes desde el modal
-// Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
-
-
 // RUTAS PARA LAS DIRECCIONES
 Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
 Route::get('/direcciones/crear', CrearDireccion::class)->name('direcciones.create');
