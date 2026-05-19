@@ -54,4 +54,10 @@ class Producto extends Model
         // Trae solo una imagen donde portada sea true (1)
         return $this->hasOne(ImagenProducto::class, 'id_producto')->where('portada', 1);
     }
+
+    public function comentarios()
+    {
+        // Un producto tiene muchos comentarios (hasMany)
+        return $this->hasMany(Comentario::class, 'id_producto', 'id_producto');
+    }
 }
