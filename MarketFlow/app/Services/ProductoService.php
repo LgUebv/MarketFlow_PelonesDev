@@ -133,10 +133,18 @@ class ProductoService
     private function formatProductos(Producto $producto) : array
     {
         return [
-            'id'          => $producto->id_producto,
-            'nombre'      => $producto->nombre,
+            'id' => $producto->id_producto,
+            'nombre' => $producto->nombre,
             'descripcion' => $producto->descripcion,
-            'imagen'      => $producto->portada?->url ?? null,
+            'stock' => $producto->stock,
+            'precio' => $producto->precio,
+            'imagen' => $producto->portada?->url ?? null,
+            'comentarios' => $producto->comentarios->map(fn($com) => [
+                'id'         => $com->id_comentario,
+                'id_user'    => $com->id_user,
+                'comentario' => $com->comentario,
+                'fecha'      => $com->created_at->diffForHumans(),
+            ]),
         ];
     }
 
@@ -146,5 +154,15 @@ class ProductoService
         return Producto::with('portada')
             ->get()
             ->map(fn($producto) => $this->formatProductos($producto));
+    }
+
+    // Funcion para obtener los detalles del producto
+    public function getDetalle(int $id) : array
+    {
+        $producto = Producto::with(['portada', 'comentarios'])
+            ->where('id_producto', $id)
+            ->firstOrFail();
+
+        return $this->formatProductos($producto);
     }
 }
