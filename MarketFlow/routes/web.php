@@ -10,6 +10,7 @@ use App\Livewire\Admin\Panel;
 use App\Livewire\CatalogoVendedor;
 use App\Livewire\AgregarProducto;
 use App\Livewire\CatalogoGeneral;
+use App\Livewire\Vendedor\MisVentas;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Livewire\ModificarCategoria;
@@ -22,6 +23,7 @@ use App\Livewire\VerDirecciones;
 use App\Livewire\VerMisDirecciones;
 use App\Livewire\CrearPedido;
 use App\Livewire\MisCompras;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Jetstream;
 
 // Route::get('/', function () {
@@ -39,22 +41,28 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:vendedor'
 ])->group(function () {
+
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        if (Auth::user()->hasRole('vendedor')) {
+            return view('dashboard');
+        }
+
+        if (Auth::user()->hasRole('comprador')) {
+            return redirect()->route('mis-compras');
+        }
+
+        abort(403);
     })->name('dashboard');
-});
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-    'role:comprador' // Esto asegura que solo los compradores entren
-])->group(function () {
+    Route::middleware('role:vendedor')->group(function () {
+        Route::get('/mis-ventas', MisVentas::class)->name('mis-ventas');
+    });
 
-    // Rutas para mostrar el historial de pedidos del comprador
-    Route::get('/mis-compras', MisCompras::class)->name('mis-compras');
+    Route::middleware('role:comprador')->group(function () {
+        Route::get('/mis-compras', MisCompras::class)->name('mis-compras');
+    });
+
 });
 
 // ruta para productos del vendedor
@@ -62,16 +70,6 @@ Route::get('/mis-productos', CatalogoVendedor::class)->name('vendedor.productos'
 
 // ruta para agregar nuevo producto
 Route::get('/mis-productos/nuevo', AgregarProducto::class)->name('vendedor.productos.create');
-
-// Ruta para productos
-// Route::resource('productos', ProductoController::class);
-
-// // Para borrar una imagen específica
-// Route::delete('/imagen-producto/{imagen}', [ProductoController::class, 'destroyImagen'])->name('productos.imagen.destroy');
-
-// // Para añadir nuevas imágenes desde el modal
-// Route::post('/producto/{producto}/add-imagenes', [ProductoController::class, 'addImagenes'])->name('productos.imagen.add');
-
 
 // RUTAS PARA LAS DIRECCIONES
 Route::get('/direcciones', VerDirecciones::class)->name('direcciones.index');
