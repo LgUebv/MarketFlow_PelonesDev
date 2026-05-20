@@ -140,10 +140,10 @@ class ProductoService
             'precio' => $producto->precio,
             'imagen' => $producto->portada?->url ?? null,
             'comentarios' => $producto->comentarios->map(fn($com) => [
-                'id'         => $com->id_comentario,
-                'id_user'    => $com->id_user,
+                'id'=> $com->id_comentario,
+                'usuario' => $com->user->name,
                 'comentario' => $com->comentario,
-                'fecha'      => $com->created_at->diffForHumans(),
+                'fecha' => $com->created_at->diffForHumans(),
             ]),
         ];
     }
@@ -160,7 +160,7 @@ class ProductoService
     // Funcion para obtener los detalles del producto
     public function getDetalle(int $id) : array
     {
-        $producto = Producto::with(['portada', 'comentarios'])
+        $producto = Producto::with(['portada', 'comentarios.user'])
             ->where('id_producto', $id)
             ->firstOrFail();
 
